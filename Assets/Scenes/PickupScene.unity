@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 377146627}
   - component: {fileID: 377146626}
   - component: {fileID: 377146625}
+  - component: {fileID: 377146631}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -414,7 +415,6 @@ MonoBehaviour:
   maxSpeed: 10
   jumpPower: 17
   size: 0
-  ogScale: {x: 0, y: 0, z: 0}
 --- !u!70 &377146627
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -546,6 +546,18 @@ Transform:
   - {fileID: 2090589531}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &377146631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377146624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4363f4880446f4997207cc963fffb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &438184530
 GameObject:
   m_ObjectHideFlags: 0
