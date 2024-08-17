@@ -4,30 +4,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     Rigidbody2D rb;
     CapsuleCollider2D col;
+    PlayerAbilityManager abilityManager;
     public Transform groundCheck;
     public LayerMask groundLayer;
 
     private float hInput;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
-    public float size;
+    public PlayerAbilityManager.PlayerSize size;
+    private float numericalSize;
     public Vector3 ogScale;
+
+    
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
-        size = 1;
+        abilityManager = GetComponent<PlayerAbilityManager>();
+        size = PlayerAbilityManager.PlayerSize.Normal;
         ogScale = transform.localScale;
     }
 
     private bool CheckGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f*size, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f*numericalSize, groundLayer);
     }
 
     void FixedUpdate()
@@ -40,11 +45,23 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
     }
 
-    public void SetSize(float scale)
+    public void SetSize(PlayerAbilityManager.PlayerSize size)
     {
-        transform.localScale = ogScale * scale;
-        Debug.Log(ogScale + ", "+ scale);
-        size = scale;
+        switch (size)
+        {
+            case PlayerAbilityManager.PlayerSize.Mini:
+                transform.localScale = ogScale * 0.5f;
+                numericalSize = 0.5f;
+                break;
+            case PlayerAbilityManager.PlayerSize.Normal:
+                transform.localScale = ogScale;
+                numericalSize = 1f;
+                break;
+            case PlayerAbilityManager.PlayerSize.Big:
+                transform.localScale = ogScale * 2f;
+                numericalSize = 2f;
+                break;
+        }
     }
 
     public void GetJumpInput(InputAction.CallbackContext context)
@@ -72,11 +89,11 @@ public class PlayerController : MonoBehaviour
         {
             if (context.ReadValue<float>() > 0)
             {
-                SetSize(2);
+                SetSize(PlayerAbilityManager.PlayerSize.Big);
             }
             else
             {
-                SetSize(0.5f);
+                SetSize(PlayerAbilityManager.PlayerSize.Mini);
             }
                 
         }

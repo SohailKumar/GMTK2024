@@ -11,7 +11,7 @@ public class PickupHandler : MonoBehaviour
     {
         Destroy(this.gameObject);
 
-        collision.gameObject.GetComponent<PlayerController>().SetSize(0.5f);
+        collision.gameObject.GetComponent<PlayerMovement>().SetSize(PlayerAbilityManager.PlayerSize.Mini);
         Debug.Log(collision.gameObject.name);
     }
 }
