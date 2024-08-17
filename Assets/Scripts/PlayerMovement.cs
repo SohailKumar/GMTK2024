@@ -12,17 +12,20 @@ public class PlayerMovement : MonoBehaviour
     public Transform groundCheck;
     public LayerMask groundLayer;
 
+    //movement vars
     private float hInput;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
+
+    //scale vars
     public PlayerAbilityManager.PlayerSize size;
     private float numericalSize;
-    public Vector3 ogScale;
-
-    
+    private Vector3 ogScale;
 
     void Awake()
     {
+        numericalSize = 1;
+        Physics2D.queriesStartInColliders = false;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         abilityManager = GetComponent<PlayerAbilityManager>();
@@ -30,19 +33,36 @@ public class PlayerMovement : MonoBehaviour
         ogScale = transform.localScale;
     }
 
-    private bool CheckGrounded()
-    {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f*numericalSize, groundLayer);
-    }
-
     void FixedUpdate()
     {
+        CheckCollisions();
         ApplyMovement();
+    }
+
+    private void CheckCollisions()
+    {
+        bool checkGround = CheckGrounded();
+
+
+    }
+
+    private bool CheckGrounded()
+    {
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f * numericalSize, groundLayer);
     }
 
     void ApplyMovement()
     {
         rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
+        //if (hInput == 0)
+        //{
+        //    var deceleration = grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
+        //    _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+        //}
+        //else
+        //{
+        //    _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
+        //}
     }
 
     public void SetSize(PlayerAbilityManager.PlayerSize size)
