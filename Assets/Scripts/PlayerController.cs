@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
     public float size;
-    public Vector2 ogScale;
+    public Vector3 ogScale;
 
     void Awake()
     {

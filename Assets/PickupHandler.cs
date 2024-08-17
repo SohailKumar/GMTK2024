@@ -10,7 +10,8 @@ public class PickupHandler : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Destroy(this.gameObject);
-        //collision.gameObject.GetComponent<PlayerController>().GetSizeInput();
+
+        collision.gameObject.GetComponent<PlayerController>().SetSize(0.5f);
         Debug.Log(collision.gameObject.name);
     }
 }
