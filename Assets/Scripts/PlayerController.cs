@@ -15,12 +15,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
     public float size;
+    public Vector2 ogScale;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
         size = 1;
+        ogScale = transform.localScale;
     }
 
     private bool CheckGrounded()
@@ -36,6 +38,13 @@ public class PlayerController : MonoBehaviour
     void ApplyMovement()
     {
         rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
+    }
+
+    public void SetSize(float scale)
+    {
+        transform.localScale = ogScale * scale;
+        Debug.Log(ogScale + ", "+ scale);
+        size = scale;
     }
 
     public void GetJumpInput(InputAction.CallbackContext context)
@@ -63,15 +72,14 @@ public class PlayerController : MonoBehaviour
         {
             if (context.ReadValue<float>() > 0)
             {
-                size *= 2;
-                transform.localScale *= 2 ;
+                SetSize(2);
             }
             else
             {
-                size /= 2;
-                transform.localScale /= 2;
+                SetSize(0.5f);
             }
                 
         }
     }
+
 }
