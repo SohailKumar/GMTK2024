@@ -42,8 +42,6 @@ public class PlayerMovement : MonoBehaviour
     private void CheckCollisions()
     {
         bool checkGround = CheckGrounded();
-
-
     }
 
     private bool CheckGrounded()
