@@ -14,16 +14,18 @@ public class PlayerController : MonoBehaviour
     private float hInput;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
+    public float size;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
+        size = 1;
     }
 
     private bool CheckGrounded()
     {
-        return Physics2D.OverlapCircle(groundCheck.position, 0.2f, groundLayer);
+        return Physics2D.OverlapCircle(groundCheck.position, 0.2f*size, groundLayer);
     }
 
     void FixedUpdate()
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
         rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
     }
 
-    public void Jump(InputAction.CallbackContext context)
+    public void GetJumpInput(InputAction.CallbackContext context)
     {
         //Debug.Log(context.performed + ", " + context.canceled);
         if(context.performed && CheckGrounded())
@@ -53,5 +55,23 @@ public class PlayerController : MonoBehaviour
     public void GetMoveInput(InputAction.CallbackContext context)
     {
         hInput = context.ReadValue<Vector2>().x;
+    }
+
+    public void GetSizeInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            if (context.ReadValue<float>() > 0)
+            {
+                size *= 2;
+                transform.localScale *= 2 ;
+            }
+            else
+            {
+                size /= 2;
+                transform.localScale /= 2;
+            }
+                
+        }
     }
 }
