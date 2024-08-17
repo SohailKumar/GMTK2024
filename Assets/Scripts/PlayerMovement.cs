@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     PlayerAbilityManager abilityManager;
     public Transform groundCheck;
     public LayerMask groundLayer;
+    Camera mainCamera;
+    Vector3 cameraOffset;
 
     //movement vars
     private float hInput;
@@ -31,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
         abilityManager = GetComponent<PlayerAbilityManager>();
         size = PlayerAbilityManager.PlayerSize.Normal;
         ogScale = transform.localScale;
+        mainCamera = Camera.main;
+        cameraOffset = mainCamera.transform.position - transform.position;
     }
 
     void FixedUpdate()
@@ -51,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
+        mainCamera.transform.position = transform.position + cameraOffset;
+
         rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
         //if (hInput == 0)
         //{
@@ -70,14 +76,17 @@ public class PlayerMovement : MonoBehaviour
             case PlayerAbilityManager.PlayerSize.Mini:
                 transform.localScale = ogScale * 0.5f;
                 numericalSize = 0.5f;
+                mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 break;
             case PlayerAbilityManager.PlayerSize.Normal:
                 transform.localScale = ogScale;
                 numericalSize = 1f;
+                mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 break;
             case PlayerAbilityManager.PlayerSize.Big:
                 transform.localScale = ogScale * 2f;
                 numericalSize = 2f;
+                mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 break;
         }
     }
