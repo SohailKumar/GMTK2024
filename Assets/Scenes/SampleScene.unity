@@ -774,8 +774,9 @@ GameObject:
   - component: {fileID: 1962560057}
   - component: {fileID: 1962560055}
   - component: {fileID: 1962560060}
-  - component: {fileID: 1962560059}
   - component: {fileID: 1962560061}
+  - component: {fileID: 1962560059}
+  - component: {fileID: 1962560062}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -799,7 +800,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 3.5
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 74e9a45a385318b429eebbc6e474d4fa, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -897,6 +898,7 @@ MonoBehaviour:
   maxSpeed: 10
   jumpPower: 17
   size: 0
+  ogScale: {x: 0, y: 0, z: 0}
 --- !u!70 &1962560060
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1054,6 +1056,18 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1962560062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962560054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4363f4880446f4997207cc963fffb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
