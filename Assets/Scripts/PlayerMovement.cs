@@ -77,16 +77,19 @@ public class PlayerMovement : MonoBehaviour
                 transform.localScale = ogScale * 0.5f;
                 numericalSize = 0.5f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
+                jumpPower = 10;
                 break;
             case PlayerAbilityManager.PlayerSize.Normal:
                 transform.localScale = ogScale;
                 numericalSize = 1f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
+                jumpPower = 17;
                 break;
             case PlayerAbilityManager.PlayerSize.Big:
                 transform.localScale = ogScale * 2f;
                 numericalSize = 2f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
+                jumpPower = 24;
                 break;
         }
     }
