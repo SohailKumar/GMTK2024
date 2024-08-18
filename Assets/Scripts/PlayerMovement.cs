@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     private float hInput;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
+    [SerializeField] float followSharpness;
 
     //scale vars
     public PlayerAbilityManager.PlayerSize size;
@@ -55,7 +56,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
-        mainCamera.transform.position = transform.position + cameraOffset;
+        float blend = 1f - Mathf.Pow(1f - followSharpness, Time.deltaTime * 30f);
+        mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, transform.position + cameraOffset, blend);
 
         rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
         //if (hInput == 0)
