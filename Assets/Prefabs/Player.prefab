@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7697271861915752079}
   - component: {fileID: 94489457072420339}
   - component: {fileID: 6945817863391043430}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,6 +293,10 @@ MonoBehaviour:
     m_Bits: 64
   maxSpeed: 10
   jumpPower: 17
+  followSharpness: 0.4
+  deceleration: 50
+  acceleration: 70
+  totalJumps: 1
   size: 0
 --- !u!114 &94489457072420339
 MonoBehaviour:

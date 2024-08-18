@@ -23,7 +23,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float followSharpness;
     [SerializeField] float deceleration;
     [SerializeField] float acceleration;
-    [SerializeField] private float availJumps;
+    private float availJumps;
+    [SerializeField] float totalJumps;
 
 
     //scale vars
@@ -57,14 +58,12 @@ public class PlayerMovement : MonoBehaviour
         // landed on ground
         if (!isGrounded && checkGround)
         {
-            Debug.Log(1);
             isGrounded = true;
-            availJumps = 2;
+            availJumps = totalJumps;
         }
         // left the ground
         else if (isGrounded && !checkGround)
         {
-            Debug.Log(2);
             isGrounded = false;
         }
     }
@@ -109,18 +108,21 @@ public class PlayerMovement : MonoBehaviour
                 numericalSize = 0.5f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 jumpPower = 10;
+                totalJumps = 2;
                 break;
             case PlayerAbilityManager.PlayerSize.Normal:
                 transform.localScale = ogScale;
                 numericalSize = 1f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 jumpPower = 17;
+                totalJumps = 1;
                 break;
             case PlayerAbilityManager.PlayerSize.Big:
                 transform.localScale = ogScale * 2f;
                 numericalSize = 2f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 jumpPower = 24;
+                totalJumps = 1;
                 break;
         }
     }
