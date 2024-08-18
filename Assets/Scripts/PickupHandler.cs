@@ -6,12 +6,26 @@ using UnityEngine;
 public class PickupHandler : MonoBehaviour
 {
     public CapsuleCollider2D capsuleCollider2;
+    public enum pickupType { Shrink, Grow, Collectable }
+    [SerializeField] 
+    public pickupType PickupType;
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if(PickupType == pickupType.Collectable)
+        {
+            //Add one to the global manager
+        }
+        if(PickupType == pickupType.Shrink)
+        {
+            collision.gameObject.GetComponent<PlayerMovement>().SetSize(PlayerAbilityManager.PlayerSize.Mini);
+        }
+        if (PickupType == pickupType.Grow)
+        {
+            collision.gameObject.GetComponent<PlayerMovement>().SetSize(PlayerAbilityManager.PlayerSize.Big);
+        }
         Destroy(this.gameObject);
-
-        collision.gameObject.GetComponent<PlayerMovement>().SetSize(PlayerAbilityManager.PlayerSize.Mini);
-        Debug.Log(collision.gameObject.name);
+        
+        //Debug.Log(collision.gameObject.name);
     }
 }
