@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -16,11 +17,14 @@ public class PlayerMovement : MonoBehaviour
 
     //movement vars
     private float hInput;
+    private bool isGrounded;
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
     [SerializeField] float followSharpness;
     [SerializeField] float deceleration;
     [SerializeField] float acceleration;
+    [SerializeField] private float availJumps;
+
 
     //scale vars
     public PlayerAbilityManager.PlayerSize size;
@@ -30,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     void Awake()
     {
         numericalSize = 1;
+        isGrounded = false;
         Physics2D.queriesStartInColliders = false;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<CapsuleCollider2D>();
@@ -49,11 +54,34 @@ public class PlayerMovement : MonoBehaviour
     private void CheckCollisions()
     {
         bool checkGround = CheckGrounded();
+        // landed on ground
+        if (!isGrounded && checkGround)
+        {
+            Debug.Log(1);
+            isGrounded = true;
+            availJumps = 2;
+        }
+        // left the ground
+        else if (isGrounded && !checkGround)
+        {
+            Debug.Log(2);
+            isGrounded = false;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
+        //Gizmos.DrawSphere(groundCheck.position, 0.2f * numericalSize);
+        Gizmos.DrawCube(groundCheck.position, new Vector3(0.7f * numericalSize, 0.2f, 1f));
     }
 
     private bool CheckGrounded()
     {
         return Physics2D.OverlapCircle(groundCheck.position, 0.2f * numericalSize, groundLayer);
+
+        //return Physics2D.OverlapBox(groundCheck.position, new Vector2(0.7f * numericalSize, 0.2f), groundLayer);
     }
 
     void ApplyMovement()
@@ -100,8 +128,9 @@ public class PlayerMovement : MonoBehaviour
     public void GetJumpInput(InputAction.CallbackContext context)
     {
         //Debug.Log(context.performed + ", " + context.canceled);
-        if(context.performed && CheckGrounded())
+        if(context.performed && availJumps>0)
         {
+            availJumps--;
             rb.velocity = new Vector2(rb.velocity.x, jumpPower);
         }
 
