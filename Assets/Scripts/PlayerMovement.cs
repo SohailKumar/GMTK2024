@@ -19,6 +19,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float maxSpeed;
     [SerializeField] float jumpPower;
     [SerializeField] float followSharpness;
+    [SerializeField] float deceleration;
+    [SerializeField] float acceleration;
 
     //scale vars
     public PlayerAbilityManager.PlayerSize size;
@@ -59,16 +61,15 @@ public class PlayerMovement : MonoBehaviour
         float blend = 1f - Mathf.Pow(1f - followSharpness, Time.deltaTime * 30f);
         mainCamera.transform.position = Vector3.Lerp(mainCamera.transform.position, transform.position + cameraOffset, blend);
 
-        rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
-        //if (hInput == 0)
-        //{
-        //    var deceleration = grounded ? _stats.GroundDeceleration : _stats.AirDeceleration;
-        //    _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
-        //}
-        //else
-        //{
-        //    _frameVelocity.x = Mathf.MoveTowards(_frameVelocity.x, _frameInput.Move.x * _stats.MaxSpeed, _stats.Acceleration * Time.fixedDeltaTime);
-        //}
+        //rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
+        if (hInput == 0)
+        {
+            rb.velocity = new Vector2( Mathf.MoveTowards(rb.velocity.x, 0, deceleration * Time.fixedDeltaTime), rb.velocity.y);
+        }
+        else
+        {
+            rb.velocity = new Vector2( Mathf.MoveTowards(rb.velocity.x, hInput * maxSpeed, acceleration * Time.fixedDeltaTime), rb.velocity.y);
+        }
     }
 
     public void SetSize(PlayerAbilityManager.PlayerSize size)
