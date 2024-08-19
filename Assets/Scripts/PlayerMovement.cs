@@ -182,6 +182,13 @@ public class PlayerMovement : MonoBehaviour
                 
         }
     }
+    public void GetNormalSizeInput(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            SetSize(PlayerAbilityManager.PlayerSize.Normal);
+        }
+    }
 
     public void GetDashInput(InputAction.CallbackContext context)
     {
