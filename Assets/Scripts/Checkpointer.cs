@@ -7,6 +7,7 @@ public class Checkpointer : MonoBehaviour
     GameObject currCheckpoint;
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.CompareTag("Checkpoint"))
         {
             currCheckpoint = collision.gameObject;
@@ -15,6 +16,12 @@ public class Checkpointer : MonoBehaviour
         {
             transform.position = currCheckpoint.transform.position;
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.gameObject.name);
+
     }
 
 }
