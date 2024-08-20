@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     Camera mainCamera;
     Vector3 cameraOffset;
 
+    [SerializeField] Animator playerAnim;
+    [SerializeField] Animator beamAnim;
+
     //movement vars
     private float hInput;
     private bool isGrounded;
@@ -21,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float followSharpness;
     [SerializeField] float deceleration;
     [SerializeField] float acceleration;
+    private bool isFacingRight;
+
     //jumps
     private float availJumps;
     [SerializeField] float jumpPower;
@@ -62,12 +67,22 @@ public class PlayerMovement : MonoBehaviour
         ApplyMovement();
     }
 
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
+    }
+
     private void CheckCollisions()
     {
         bool checkGround = CheckGrounded();
         // landed on ground
         if (!isGrounded && checkGround)
         {
+            playerAnim.SetTrigger("land");
+            beamAnim.SetTrigger("land");
             isGrounded = true;
             availJumps = totalJumps;
             if (dashEnabled)
@@ -78,6 +93,8 @@ public class PlayerMovement : MonoBehaviour
         // left the ground
         else if (isGrounded && !checkGround)
         {
+            playerAnim.SetTrigger("jump");
+            beamAnim.SetTrigger("jump");
             isGrounded = false;
         }
     }
@@ -99,23 +116,38 @@ public class PlayerMovement : MonoBehaviour
 
     void ApplyMovement()
     {
+        if((isFacingRight && hInput > 0) || (!isFacingRight && hInput < 0))
+        {
+            Flip();
+        }
+
         //rb.velocity = new Vector2(hInput * maxSpeed, rb.velocity.y);
         if (hInput == 0)
         {
+            beamAnim.SetBool("moving", false);
+            playerAnim.SetBool("moving", false);
             rb.velocity = new Vector2( Mathf.MoveTowards(rb.velocity.x, 0, deceleration * Time.fixedDeltaTime), rb.velocity.y);
         }
         else
         {
+            beamAnim.SetBool("moving", true);
+            playerAnim.SetBool("moving", true);
             rb.velocity = new Vector2( Mathf.MoveTowards(rb.velocity.x, hInput * maxSpeed, acceleration * Time.fixedDeltaTime), rb.velocity.y);
         }
     }
 
     public void SetSize(PlayerAbilityManager.PlayerSize size)
     {
+        float direction = (isFacingRight == true) ? -1f : 1f;
+        Vector3 localScale;
         switch (size)
         {
             case PlayerAbilityManager.PlayerSize.Mini:
                 transform.localScale = ogScale * 0.5f;
+                localScale = transform.localScale;
+                localScale.x *= direction;
+                transform.localScale = localScale;
+
                 numericalSize = 0.5f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 jumpPower = 10;
@@ -126,6 +158,10 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerAbilityManager.PlayerSize.Normal:
                 transform.localScale = ogScale;
+                localScale = transform.localScale;
+                localScale.x *= direction;
+                transform.localScale = localScale;
+
                 numericalSize = 1f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 jumpPower = 17;
@@ -136,6 +172,10 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case PlayerAbilityManager.PlayerSize.Big:
                 transform.localScale = ogScale * 2f;
+                localScale = transform.localScale;
+                localScale.x *= direction;
+                transform.localScale = localScale;
+
                 numericalSize = 2f;
                 mainCamera.GetComponent<Camera>().orthographicSize = 5*numericalSize;
                 jumpPower = 24;
